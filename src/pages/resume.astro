@@ -1,0 +1,163 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const skills = [
+  { group: 'Languages', items: ['Python', 'TypeScript', 'JavaScript', 'SQL', 'HTML/CSS', 'Bash'] },
+  { group: 'Frameworks', items: ['Django', 'Flask', 'Angular', 'React/Redux', 'Express'] },
+  { group: 'Cloud & Infra', items: ['GCP', 'Kubernetes', 'Helm', 'Docker', 'Terraform'] },
+  { group: 'Databases', items: ['PostgreSQL', 'MySQL'] },
+  { group: 'Home Lab', items: ['k3s', 'Traefik', 'MQTT', 'C++', 'Arduino'] },
+  { group: 'Tools', items: ['Git', 'Jira', 'Figma', 'Lucid'] },
+];
+
+const experience = [
+  {
+    title: 'Tech Lead, Data Platforms',
+    org: 'Cardinal Health – Commercial Technologies',
+    date: 'Jan 2024 – Present',
+    bullets: [
+      'Lead an Agile team delivering a self-service data platform used by multiple business units generating tens of billions in annual revenue.',
+      'Orchestrate initiatives across disciplines, teams, and technologies in a complex, regulated cloud environment.',
+      'Mentor engineers through pairing, design reviews, and documentation.',
+      'Own the Disaster Recovery approach for the enterprise data warehouse.',
+      'Build data pipelines supporting FinOps cloud cost savings initiatives.',
+    ],
+  },
+  {
+    title: 'Tech Lead Software Engineer',
+    org: 'Dandelion Energy',
+    date: 'Mar 2022 – Jan 2024',
+    bullets: [
+      'Directed software team on requirements, architecture, and technical strategy.',
+      'Managed all cloud infrastructure in Google Cloud Platform; led third-party CRM integration.',
+      'Built data pipelines connecting internal systems with COTS products.',
+      'Expanded and improved proprietary geothermal design toolset.',
+    ],
+  },
+  {
+    title: 'Full Stack Software Engineer',
+    org: 'Garmin International – Aviation',
+    date: 'Feb 2017 – Mar 2022',
+    bullets: [
+      'Built release coordination tools used by all Aviation Software teams, enabling scalable growth.',
+      'Automated operations to reduce manual effort and quality escapes by ~50%.',
+      'Troubleshot critical bugs enabling the launch of a desktop app used by all aviation customers.',
+      'Owned customer communication tools connecting Garmin with OEM partners.',
+    ],
+  },
+  {
+    title: 'Systems Engineer',
+    org: 'Garmin International',
+    date: 'Dec 2013 – Feb 2017',
+    bullets: [
+      'Built a web tool providing early warnings of parts obsolescence to senior leaders.',
+      'Verified software and electrical requirements on integrated avionics test systems.',
+    ],
+  },
+  {
+    title: 'Technical Program Manager',
+    org: 'Garmin International',
+    date: 'Aug 2010 – Dec 2013',
+    bullets: [
+      'Served as technical liaison and systems engineer for two major avionics integration programs worth millions annually.',
+      'Coordinated Aircraft on Ground (AOG) issue resolution and delivered pilot/flight-worthiness briefings.',
+    ],
+  },
+  {
+    title: 'Associate Engineer',
+    org: 'Cessna Aircraft Company',
+    date: '2008 – 2009',
+    bullets: [
+      'Supported avionics structures design using CATIA.',
+    ],
+  },
+  {
+    title: 'Co-op Engineer',
+    org: 'NASA Goddard Space Flight Center',
+    date: '2006 – 2007',
+    bullets: [
+      'Built propulsion subsystem simulations in MATLAB.',
+    ],
+  },
+];
+---
+
+<Layout title="Resume" description="Resume – Hunter Myers">
+  <section class="section">
+    <h1>Resume</h1>
+    <p class="subtitle">
+      PDF available on request &mdash;
+      <a href="mailto:myers.hunter@gmail.com">myers.hunter@gmail.com</a>
+    </p>
+  </section>
+
+  <section class="resume-section">
+    <h2>Skills</h2>
+    <div class="skill-grid">
+      {skills.map(({ group, items }) => (
+        <div class="skill-group">
+          <h4>{group}</h4>
+          <div class="skill-list">
+            {items.map(item => <span class="tag">{item}</span>)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="resume-section">
+    <h2>Experience</h2>
+    {experience.map(({ title, org, date, bullets }) => (
+      <div class="resume-item">
+        <div class="resume-item-header">
+          <div>
+            <div class="resume-title">{title}</div>
+            <div class="resume-org">{org}</div>
+          </div>
+          <span class="resume-date">{date}</span>
+        </div>
+        <ul class="resume-bullets">
+          {bullets.map(b => <li>{b}</li>)}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <section class="resume-section">
+    <h2>Education</h2>
+    <div class="resume-item">
+      <div class="resume-item-header">
+        <div>
+          <div class="resume-title">B.S. Aerospace Engineering</div>
+          <div class="resume-org">Saint Louis University</div>
+        </div>
+        <span class="resume-date">2008</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="resume-section">
+    <h2>Certifications &amp; Achievements</h2>
+    <div class="resume-item">
+      <div class="resume-title">Google Cloud Professional Cloud Architect</div>
+      <div class="resume-org">Certification ID: 044f592ed6f74ea992d68edd6cccb0bb</div>
+      <div class="resume-org">Expires Dec 2027</div>
+    </div>
+    <div class="resume-item" style="margin-top: 1rem;">
+      <div class="resume-title">Commercial Pilot Certificate</div>
+      <div class="resume-org">Instrument Rated · Tailwheel · 600+ flight hours · Built and fly experimental aircraft N41HM (Van's RV-7A)</div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .resume-bullets {
+    margin: 0.5rem 0 0 1rem;
+    padding: 0;
+    color: var(--muted);
+    font-size: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+</style>

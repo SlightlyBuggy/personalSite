@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const links = [
+  {
+    label: 'Email',
+    value: 'myers.hunter@gmail.com',
+    href: 'mailto:myers.hunter@gmail.com',
+    icon: '✉',
+  },
+  {
+    label: 'LinkedIn',
+    value: 'linkedin.com/in/hunter-myers-727b016',
+    href: 'https://www.linkedin.com/in/hunter-myers-727b016/',
+    icon: '⊞',
+  },
+  {
+    label: 'GitHub',
+    value: 'github.com/huntermyers',
+    href: 'https://github.com/SlightlyBuggy',
+    icon: '⬡',
+  },
+  {
+    label: 'YouTube',
+    value: '@RandoGuy — Randonneuring',
+    href: 'https://www.youtube.com/@RandoGuy-g3q',
+    icon: '▶',
+  },
+  {
+    label: 'FlightAware',
+    value: 'N41HM — Van\'s RV-7A',
+    href: 'https://www.flightaware.com/live/flight/N41HM',
+    icon: '✈',
+  },
+];
+---
+
+<Layout title="Contact" description="Get in touch with Hunter Myers">
+  <section class="section">
+    <h1>Contact</h1>
+    <p class="subtitle">Best reached by email</p>
+  </section>
+
+  <div class="contact-links">
+    {links.map(({ label, value, href, icon }) => (
+      <a href={href} class="contact-link" target="_blank" rel="noopener noreferrer">
+        <span class="contact-icon">{icon}</span>
+        <span class="contact-link-label">{label}</span>
+        <span>{value}</span>
+      </a>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .contact-icon {
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+</style>

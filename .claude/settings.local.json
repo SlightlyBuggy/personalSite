@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/huntermyers/Code/homeSite/sprinkler/**)"
+    ]
+  }
+}

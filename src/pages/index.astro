@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About">
+  <section class="section">
+    <h1>Hunter Myers</h1>
+    <p class="subtitle">Tech Lead &middot; Cloud Architect &middot; Commercial Pilot &middot; Randonneur</p>
+  </section>
+
+  <section class="section">
+    <p>
+      Cloud engineer and technical leader with 10+ years building scalable systems at companies
+      ranging from Garmin Aviation to Cardinal Health. I started in aerospace engineering, which
+      led to systems and software work on avionics before transitioning into full stack development 
+      then finally shifting fully into cloud and platform
+      engineering. I currently lead a data platform team at Cardinal Health supporting business
+      units generating tens of billions in annual revenue.
+    </p>
+    <p>
+      Outside of work I build and fly experimental aircraft — N41HM is a
+      <a href="https://www.flightaware.com/live/flight/N41HM" target="_blank" rel="noopener noreferrer">Van's RV-7A I built myself</a>,
+      and I hold a commercial pilot certificate with instrument and tailwheel ratings.
+      I am also beginning a journey in the endurance cycling sport of 
+      <a href="https://www.youtube.com/@RandoGuy-g3q" target="_blank" rel="noopener noreferrer">Randonneuring</a>
+      — unsupported long-distance brevets ranging from 200km to 1200km.
+    </p>
+    <p>
+      This site runs on a Kubernetes cluster I manage at home, served by nginx in a container,
+      deployed via Helm, and routed through Traefik. The same cluster runs a
+      rain barrel irrigation system I built end-to-end: custom IoT hardware, MQTT,
+      a Django webapp, and a PostgreSQL database — all on bare metal in my basement.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Interests</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Aviation</h3>
+        <p>Commercial pilot, instrument rated, tailwheel endorsed. Built and fly a Van's RV-7A (N41HM). B.S. Aerospace Engineering.</p>
+      </div>
+      <div class="card">
+        <h3>Randonneuring</h3>
+        <p>Endurance and ultra-endurance unsupported cycling on a recumbent. 200km, 300km, 400km, and 600km brevets. Initial goal is a 200km gravel brevet - documenting the journey on YouTube.</p>
+      </div>
+      <div class="card">
+        <h3>Home Infrastructure</h3>
+        <p>Bare-metal k8s cluster, Helm, Traefik, custom IoT devices, MQTT, and a rain barrel automation system built from scratch.</p>
+      </div>
+    </div>
+  </section>
+</Layout>

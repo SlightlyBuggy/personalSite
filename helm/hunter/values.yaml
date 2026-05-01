@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: myersc6535/hunter-portfolio
+  pullPolicy: IfNotPresent
+  tag: "0.2.2"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: traefik
+  annotations: {}
+  host: hunterandmarykate.org
+  path: /hunter
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 64Mi
+  requests:
+    cpu: 10m
+    memory: 32Mi
