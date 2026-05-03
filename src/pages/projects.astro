@@ -2,12 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 
 const projects = [
-    {
+  {
     title: 'Flying',
     status: 'active',
     description:
       'Designed and built an experimental Van\'s RV-7A aircraft from a kit. Hold a commercial pilot certificate with instrument and tailwheel ratings, 600+ flight hours. The RV-7A is a two-seat, low-wing aluminum aircraft capable of 200 mph. Building and maintaining it requires proficiency across airframe, engine, avionics, and electrical systems.',
     tags: ['experimental-aircraft', 'avionics', 'aerospace-engineering', 'tailwheel'],
+    url: null,
   },
   {
     title: 'Home Kubernetes Cluster',
@@ -15,6 +16,7 @@ const projects = [
     description:
       'Bare-metal k3s cluster running home services. All deployments managed with Helm charts and coordinated via Helmfile. Hosts this portfolio, the rain barrel automation webapp, a media server, Vaultwarden, and a Prometheus/Grafana monitoring stack. Traffic routed through a single Traefik ingress controller backed by MetalLB.',
     tags: ['k3s', 'helm', 'helmfile', 'traefik', 'metallb', 'prometheus', 'grafana'],
+    url: null,
   },
   {
     title: 'Rain Barrel Irrigation System',
@@ -22,6 +24,7 @@ const projects = [
     description:
       'End-to-end home automation system for lawn irrigation. Custom IoT hardware (Arduino MKR WiFi 1010) monitors water pressure and pump voltage, communicates via MQTT, and checks in with a Django webapp that decides whether to sprinkle or sleep based on weather data. PostgreSQL via CloudNativePG. Designed and built the circuit boards myself.',
     tags: ['django', 'mqtt', 'arduino', 'c++', 'postgresql', 'kubernetes', '3d-modeling', '3d-printing'],
+    url: null,
   },
   {
     title: 'Randonneuring',
@@ -29,13 +32,14 @@ const projects = [
     description:
       'Ultra-endurance unsupported cycling. Brevets range from 200km to 1200km and must be completed within strict time limits without outside support. Documenting the training, preparation, and events on YouTube. Working on GPX and FIT file analysis tooling to track power, elevation, and training load across long rides.',
     tags: ['cycling', 'recumbent'],
+    url: 'https://www.youtube.com/@RandoGuy-g3q',
   },
 ];
 ---
 
-<Layout title="Projects" description="Projects by Hunter Myers">
+<Layout title="Personal Projects" description="Personal projects by Hunter Myers">
   <section class="section">
-    <h1>Projects</h1>
+    <h1>Personal Projects</h1>
     <p class="subtitle">Things I've built or am actively working on</p>
   </section>
 
@@ -48,8 +52,15 @@ const projects = [
           {p.status === 'archive' && <span class="badge badge-muted">archive</span>}
         </div>
         <p class="project-desc">{p.description}</p>
-        <div class="tags">
-          {p.tags.map(t => <span class="tag">{t}</span>)}
+        <div class="card-footer">
+          <div class="tags">
+            {p.tags.map(t => <span class="tag">{t}</span>)}
+          </div>
+          {p.url && (
+            <a href={p.url} class="card-link" target="_blank" rel="noopener noreferrer">
+              Watch on YouTube &rarr;
+            </a>
+          )}
         </div>
       </div>
     ))}
@@ -92,6 +103,20 @@ const projects = [
     color: var(--muted);
     font-size: 0.875rem;
     margin-bottom: 1rem;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .card-link {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .badge-muted {

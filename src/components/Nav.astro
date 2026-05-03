@@ -3,10 +3,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const path = Astro.url.pathname.replace(/\/$/, '');
 
 const links = [
-  { label: 'About',    href: `${base}/` },
-  { label: 'Projects', href: `${base}/projects` },
-  { label: 'Resume',   href: `${base}/resume` },
-  { label: 'Contact',  href: `${base}/contact` },
+  { label: 'About',        href: `${base}/` },
+  { label: 'Personal',     href: `${base}/projects/` },
+  { label: 'Professional', href: `${base}/professional/` },
+  { label: 'Resume',       href: `${base}/resume/` },
+  { label: 'Contact',      href: `${base}/contact/` },
 ];
 
 function isActive(href: string): boolean {
