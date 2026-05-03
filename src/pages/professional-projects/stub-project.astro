@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Project Title" description="Project Title — Hunter Myers">
+  <nav class="breadcrumb">
+    <a href={`${base}/professional-projects/`}>&larr; Professional Projects</a>
+  </nav>
+
+  <section class="section">
+    <h1>Project Title</h1>
+    <p class="subtitle">Company Name &middot; 20XX – 20XX</p>
+  </section>
+
+  <div class="project-body">
+
+    <section class="project-section">
+      <h2>The Problem</h2>
+      <p>
+        Description of the business problem and why it mattered. What was broken, missing,
+        or painful? Who was affected and what were the stakes?
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Design Decisions &amp; Tradeoffs</h2>
+      <p>
+        What options were on the table? What did we choose and why? What did we deliberately
+        not do, and what did we accept as a consequence?
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Architecture</h2>
+      <div class="diagram-placeholder">
+        [ Architecture diagram ]
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Outcome</h2>
+      <p>
+        What shipped? What changed as a result? Quantifiable impact where possible.
+      </p>
+    </section>
+
+  </div>
+</Layout>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+  }
+
+  .project-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .project-section h2 {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project-section p {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .diagram-placeholder {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 3rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.875rem;
+    font-family: monospace;
+  }
+</style>

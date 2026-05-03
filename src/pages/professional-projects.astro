@@ -1,0 +1,104 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const projects = [
+  {
+    title: 'Project Title',
+    org: 'Company Name',
+    date: '20XX – 20XX',
+    summary: 'One or two sentences describing the project at a high level.',
+    slug: 'stub-project',
+  },
+];
+---
+<!-- TODO: 
+- Add my role to each project
+- add technologies used to each project
+- use draw.io for block diagrams
+-->
+<Layout title="Professional Projects" description="Professional projects by Hunter Myers">
+  <section class="section">
+    <h1>Professional Projects</h1>
+    <p class="subtitle">Case studies from 10+ years in software development, cloud engineering, and data platforms</p>
+  </section>
+
+  <div class="project-list">
+    {projects.map(p => (
+      <a href={`${base}/professional-projects/${p.slug}/`} class="project-card">
+        <div class="project-header">
+          <div>
+            <h2>{p.title}</h2>
+            <span class="project-org">{p.org}</span>
+          </div>
+          <span class="project-date">{p.date}</span>
+        </div>
+        <p class="project-desc">{p.summary}</p>
+        <span class="project-cta">Read more &rarr;</span>
+      </a>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .project-card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    color: var(--text);
+    transition: border-color 0.2s;
+    text-decoration: none;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .project-header h2 {
+    margin-bottom: 0.15rem;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  .project-org {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .project-date {
+    color: var(--muted);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 0.15rem;
+  }
+
+  .project-desc {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-cta {
+    font-size: 0.8rem;
+    color: var(--accent);
+  }
+</style>
