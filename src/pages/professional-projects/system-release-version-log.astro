@@ -9,8 +9,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </nav>
 
   <section class="section">
-    <h1>Project Title</h1>
-    <p class="subtitle">Company Name &middot; 20XX – 20XX</p>
+    <h1>System Release Version Log</h1>
+    <p class="subtitle">Garmin International &middot; 2017 – 2020</p>
   </section>
 
   <div class="project-body">
@@ -18,16 +18,67 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <section class="project-section">
       <h2>The Problem</h2>
       <p>
-        Description of the business problem and why it mattered. What was broken, missing,
-        or painful? Who was affected and what were the stakes?
+        I joined the "Airframe" team in 2017, which is responsible for generating software deliverables that
+        are installed on customer aircraft in forward-fit installations of Garmin Integrated Flight Deck (GIFD) products.
+        A GIFD contains multiple pieces of hardware, called Line Replaceable Units (LRUs), and each LRU has
+        its own software development team, release schedule, QA, etc.  For a GIFT product to work, all LRUs must be
+        compatible with each other.  At the time I joined, the Aviation segment was experiencing significant growth,
+        both in number of customer aircraft models and in the number of distinct LRUs.  LRU Software schedules were handled
+        on an excel spreadsheet, which could not scale with the business.
       </p>
+      <p>
+        Along with scaling issues, it was becoming extremely difficult and time-consuming for Airframe Leads, who are responsible
+        for packaging all configuration and LRU software together, to know which versions to use in their build tools.  Airframe Leads
+        would look at the spreadsheet and manually enter values in their build tool, only to often find out the spreadsheet was out of
+        date, or they didn't know where to find the actual software binaries in the in-house artifact manager.  This led to quality
+        escapes because the right versions were not being tested.
+      </p>
+      <p>A more scalable approach was needed, which would:</p>
+      <ul>
+        <li>Implement a coordinated "System Release" model for all LRU software to be ready together</li>
+        <li>Provide a one-page dashboard of the status and health of each System Release during the development cycle</li>
+        <li>Reduce quality escapes by providing accurate LRU version information to Airframe Leads</li>
+      </ul>
     </section>
 
     <section class="project-section">
       <h2>Design Decisions &amp; Tradeoffs</h2>
       <p>
-        What options were on the table? What did we choose and why? What did we deliberately
-        not do, and what did we accept as a consequence?
+        From prior experience I felt a web app would be the best way to provide real-time information to all stakeholders.  A single
+        page could show all versions of software, for all current branches, along with the latest developmental version.  The concept was
+        simple, but the actual data flow was less straightforward.  How would the data be sourced, and how would I know it was accurate?
+        How would it integrate into Airframe Lead build tools?  Which data would be entered manually, and where could automation help?
+        And which stakeholders would I need to bring on board to make everything happen?
+      </p>
+      <p>
+        The actual source of truth for each LRU was the LRU team itself.  I did not believe a fully automated way to capture the data was
+        achievable, so my design incorporated crowdsourcing of data from each LRU team lead.  For that to work, they would need to use the tool.  Each lead reported to a manager; those were the decision makers
+        when it came to process changes like what I was proposing.  So I started by creating a POC of the design - database, API, and web
+        page - and demoed it to the software managers and VP.  They agreed with the approach, so I was able to move forward.
+      </p>
+      <p>
+        The initial version of the SysRel Version Log was fully manual, but I knew (from working as an Airframe Lead myself) where automation
+        would be most beneficial, and solidified a roadmap for that.  A new role, the Release Coordinator, was created to plan and schedule releases.
+        The web page had special controls accessible only to authorized Release Coordinators.  At this point the Version Log went live.
+      </p>
+      <p>
+        The first step was to automatically update the Log every time a developmental version of software was created.  Ideally, there would
+        be a standardized CI/CD pipeline I could hook into.  I had multiple discussions with various teams, and found there really was no
+        standard.  I did not believe creating and implementing a standard was going to be achievable due to the loosely organized nature of
+        the organization and a culture that emphasized organic growth over top-down processes.  So I came up with a different strategy: a
+        process that would crawl through the artifact registry and "discover" new versions of LRU binaries.  This required teams to consistently
+        tag their software, which turned out to be a challenge.  I got the standard approved at the VP level and socialized it, and had to
+        act as Tag Police for a time to ensure compliance.
+      </p>
+      <p>
+        Automatic updates enabled the Version Log to be integrated with Airframe Lead build tools.  Here again the policy of organic growth
+        was problematic because every Airframe Lead had custom Python scripts that were the entry point to the build process, and the versions
+        were defined in those scripts.  There was no standardization.  I created a new component of the build tool that would scan the completed
+        software deliverable, compare it against the Version Log, and alert the Airframe Lead if their deliverable was outdated in any way.
+      </p>
+      <p>
+        Ultimately the individual python scripts were replaced with an Electron-based GUI which enabled direct population from the Version Log.
+        The Version Log API powered that new tool, and I made strong contributions in design and testing.
       </p>
     </section>
 
@@ -55,7 +106,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <section class="project-section">
       <h2>Outcome</h2>
       <p>
-        What shipped? What changed as a result? Quantifiable impact where possible.
+        The Version Log became critical to Garmin's ability to manage software releases.  Soon after
+        adoption, the number of supported branches increased significantly.  This simply would not have been 
+        manageable without the scalability offered by the Version Log.
+      </p>
+      <p>
+        The various automated features unburdened Airframe Leads from tedious and error-prone data gathering.  
+        This freed up time for for implementation, and reduced quality escapes since alerts were generated for
+        any compatibility issues.
+      </p>
+      <p>
+        The Version Log was refactored after my time at Garmin, but still exists and continues to serve the 
+        Aviation segment.
       </p>
     </section>
 
@@ -80,9 +142,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     border-bottom: 1px solid var(--border);
   }
 
-  .project-section p {
+  .project-section p,
+  .project-section li {
     color: var(--muted);
     font-size: 0.9rem;
+  }
+
+  .project-section ul {
+    margin: 0.5rem 0 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
   }
 
   .diagram-wrapper {
