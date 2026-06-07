@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "cloudflare-ddns.fullname" . }}
+  labels:
+    {{- include "cloudflare-ddns.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: ddns
+              image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command:
+                - /bin/sh
+                - -c
+                - apk add -q --no-cache curl jq && sh /scripts/ddns.sh
+              env:
+                - name: CF_API_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ include "cloudflare-ddns.fullname" . }}
+                      key: CF_API_TOKEN
+                - name: CF_ZONE_ID
+                  value: {{ required "cloudflare.zoneId is required" .Values.cloudflare.zoneId | quote }}
+                - name: CF_RECORD_NAME
+                  value: {{ .Values.cloudflare.recordName | quote }}
+                - name: CF_TTL
+                  value: {{ .Values.cloudflare.ttl | quote }}
+                - name: CF_PROXIED
+                  value: {{ .Values.cloudflare.proxied | quote }}
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 16Mi
+                limits:
+                  cpu: 100m
+                  memory: 64Mi
+          volumes:
+            - name: scripts
+              configMap:
+                name: {{ include "cloudflare-ddns.fullname" . }}
+                defaultMode: 0755

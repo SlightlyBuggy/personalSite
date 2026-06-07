@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cloudflare-ddns
+description: Dynamic DNS updater for Cloudflare — keeps an A record pointing at a dynamic home IP
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

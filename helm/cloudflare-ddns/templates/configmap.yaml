@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cloudflare-ddns.fullname" . }}
+  labels:
+    {{- include "cloudflare-ddns.labels" . | nindent 4 }}
+data:
+  ddns.sh: |
+    #!/bin/sh
+    set -e
+
+    CURRENT_IP=$(curl -sf https://api.ipify.org)
+    echo "[ddns] public IP: $CURRENT_IP"
+
+    RESPONSE=$(curl -sf -X GET \
+      "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records?type=A&name=${CF_RECORD_NAME}" \
+      -H "Authorization: Bearer ${CF_API_TOKEN}" \
+      -H "Content-Type: application/json")
+
+    RECORD_ID=$(echo "$RESPONSE" | jq -r '.result[0].id')
+    RECORD_IP=$(echo "$RESPONSE" | jq -r '.result[0].content')
+
+    echo "[ddns] DNS record IP: $RECORD_IP"
+
+    if [ "$CURRENT_IP" = "$RECORD_IP" ]; then
+      echo "[ddns] no change needed"
+      exit 0
+    fi
+
+    echo "[ddns] updating $CF_RECORD_NAME → $CURRENT_IP"
+
+    curl -sf -X PUT \
+      "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${RECORD_ID}" \
+      -H "Authorization: Bearer ${CF_API_TOKEN}" \
+      -H "Content-Type: application/json" \
+      --data "{\"type\":\"A\",\"name\":\"${CF_RECORD_NAME}\",\"content\":\"${CURRENT_IP}\",\"ttl\":${CF_TTL},\"proxied\":${CF_PROXIED}}"
+
+    echo "[ddns] done"

@@ -1,0 +1,20 @@
+cloudflare:
+  # API token with Zone:DNS:Edit permission for your zone
+  # Set via: --set cloudflare.apiToken=<token>
+  apiToken: ""
+  # Zone ID from Cloudflare dashboard → your domain → Overview → Zone ID (bottom right)
+  zoneId: ""
+  # The A record to keep updated
+  recordName: "hunterandmarykate.org"
+  # TTL in seconds (60 = minimum; use 1 for Cloudflare "Auto")
+  ttl: 60
+  # Set to true only if you want Cloudflare proxying (orange cloud)
+  proxied: false
+
+# How often to check and update. Every 5 minutes is a reasonable default.
+schedule: "*/5 * * * *"
+
+image:
+  repository: alpine
+  tag: "3.20"
+  pullPolicy: IfNotPresent
