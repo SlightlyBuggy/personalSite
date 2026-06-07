@@ -21,10 +21,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         I joined the "Airframe" team in 2017, which is responsible for generating software deliverables that
         are installed on customer aircraft in forward-fit installations of Garmin Integrated Flight Deck (GIFD) products.
         A GIFD contains multiple pieces of hardware, called Line Replaceable Units (LRUs), and each LRU has
-        its own software development team, release schedule, QA, etc.  For a GIFT product to work, all LRUs must be
+        its own software development team, release schedule, QA, etc.  For a GIFD product to work, all LRUs must be
         compatible with each other.  At the time I joined, the Aviation segment was experiencing significant growth,
         both in number of customer aircraft models and in the number of distinct LRUs.  LRU Software schedules were handled
-        on an excel spreadsheet, which could not scale with the business.
+        on an excel spreadsheet, which could not scale with the business.  
       </p>
       <p>
         Along with scaling issues, it was becoming extremely difficult and time-consuming for Airframe Leads, who are responsible
@@ -33,12 +33,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         date, or they didn't know where to find the actual software binaries in the in-house artifact manager.  This led to quality
         escapes because the right versions were not being tested.
       </p>
+      <figure class="diagram-figure">
+        <img
+          src={`${base}/diagrams/sysrel_version_log_before.drawio.svg`}
+          alt="State of the system before the Version Log"
+          class="diagram"
+          data-full={`${base}/diagrams/sysrel_version_log_before.drawio.svg`}
+        />
+        <figcaption>In the beginning, there was chaos.</figcaption>
+        <span class="diagram-hint">Click to enlarge</span>
+      </figure>
       <p>A more scalable approach was needed, which would:</p>
       <ul>
         <li>Implement a coordinated "System Release" model for all LRU software to be ready together</li>
         <li>Provide a one-page dashboard of the status and health of each System Release during the development cycle</li>
         <li>Reduce quality escapes by providing accurate LRU version information to Airframe Leads</li>
       </ul>
+      
     </section>
 
     <section class="project-section">
@@ -61,6 +72,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         would be most beneficial, and solidified a roadmap for that.  A new role, the Release Coordinator, was created to plan and schedule releases.
         The web page had special controls accessible only to authorized Release Coordinators.  At this point the Version Log went live.
       </p>
+      <figure class="diagram-figure">
+        <img
+          src={`${base}/diagrams/sysrel_version_log_mvp.drawio.svg`}
+          alt="MVP design of the Version Log"
+          class="diagram"
+          data-full={`${base}/diagrams/sysrel_version_log_mvp.drawio.svg`}
+        />
+        <figcaption>Version Log MVP: a scalable source of truth.</figcaption>
+        <span class="diagram-hint">Click to enlarge</span>
+      </figure>
       <p>
         The first step was to automatically update the Log every time a developmental version of software was created.  Ideally, there would
         be a standardized CI/CD pipeline I could hook into.  I had multiple discussions with various teams, and found there really was no
@@ -70,57 +91,66 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         tag their software, which turned out to be a challenge.  I got the standard approved at the VP level and socialized it, and had to
         act as Tag Police for a time to ensure compliance.
       </p>
+      <figure class="diagram-figure">
+        <img
+          src={`${base}/diagrams/sysrel_version_log_discovery.drawio.svg`}
+          alt="Version discovery process"
+          class="diagram"
+          data-full={`${base}/diagrams/sysrel_version_log_discovery.drawio.svg`}
+        />
+        <figcaption>Dev binary discovery: order from chaos.</figcaption>
+        <span class="diagram-hint">Click to enlarge</span>
+      </figure>
       <p>
-        Automatic updates enabled the Version Log to be integrated with Airframe Lead build tools.  Here again the policy of organic growth
+        Automatic updates enabled the Version Log to be integrated with Airframe Lead build tools - this was the real payoff.  Here again the policy of organic growth
         was problematic because every Airframe Lead had custom Python scripts that were the entry point to the build process, and the versions
-        were defined in those scripts.  There was no standardization.  I created a new component of the build tool that would scan the completed
-        software deliverable, compare it against the Version Log, and alert the Airframe Lead if their deliverable was outdated in any way.
+        were defined in those scripts.  There was no standardization, so I could not rely on inputs to the scripts.  I created a new component of the 
+        build tool that would scan the completed software deliverable, extract which versions were being used, compare those against the Version Log, and 
+        alert the Airframe Lead if their deliverable was outdated in any way.
       </p>
+      <figure class="diagram-figure">
+        <img
+          src={`${base}/diagrams/sysrel_version_log_payoff.drawio.svg`}
+          alt="Full system payoff diagram"
+          class="diagram"
+          data-full={`${base}/diagrams/sysrel_version_log_payoff.drawio.svg`}
+        />
+        <figcaption>The payoff: increased delivery speed, reduced quality escapes.</figcaption>
+        <span class="diagram-hint">Click to enlarge</span>
+      </figure>
       <p>
         Ultimately the individual python scripts were replaced with an Electron-based GUI which enabled direct population from the Version Log.
         The Version Log API powered that new tool, and I made strong contributions in design and testing.
       </p>
-    </section>
 
-    <section class="project-section">
-      <h2>Architecture</h2>
-      <div class="diagram-wrapper">
-        <img
-          src={`${base}/diagrams/system-release-version-log.svg`}
-          alt="System Release Version Log architecture diagram"
-          class="diagram"
-          id="arch-diagram"
-        />
-        <span class="diagram-hint">Click to enlarge</span>
-      </div>
-    </section>
 
-    <div id="lightbox" class="lightbox" aria-hidden="true">
-      <img
-        src={`${base}/diagrams/system-release-version-log.svg`}
-        alt="System Release Version Log architecture diagram (full size)"
-        class="lightbox-img"
-      />
-    </div>
+
+
+
+    </section>
 
     <section class="project-section">
       <h2>Outcome</h2>
       <p>
         The Version Log became critical to Garmin's ability to manage software releases.  Soon after
-        adoption, the number of supported branches increased significantly.  This simply would not have been 
+        adoption, the number of supported branches tripled.  This simply would not have been
         manageable without the scalability offered by the Version Log.
       </p>
       <p>
-        The various automated features unburdened Airframe Leads from tedious and error-prone data gathering.  
-        This freed up time for for implementation, and reduced quality escapes since alerts were generated for
+        The various automated features unburdened Airframe Leads from tedious and error-prone data gathering.
+        This freed up time for implementation, and reduced quality escapes since alerts were generated for
         any compatibility issues.
       </p>
       <p>
-        The Version Log was refactored after my time at Garmin, but still exists and continues to serve the 
+        The Version Log was refactored after my time at Garmin, but still exists and continues to serve the
         Aviation segment.
       </p>
     </section>
 
+  </div>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <img id="lightbox-img" src="" alt="" class="lightbox-img" />
   </div>
 </Layout>
 
@@ -155,7 +185,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     gap: 0.3rem;
   }
 
-  .diagram-wrapper {
+  .diagram-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .diagram-figure {
+    margin: 0 0 1rem;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -174,11 +212,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     opacity: 0.85;
   }
 
+  figcaption {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    border-left: 3px solid var(--accent);
+    padding-left: 0.75rem;
+    text-align: left;
+  }
+
   .diagram-hint {
     display: block;
-    margin-top: 0.5rem;
-    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    font-size: 0.7rem;
     color: var(--muted);
+    opacity: 0.6;
   }
 
   .lightbox {
@@ -206,12 +256,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </style>
 
 <script>
-  const diagram = document.getElementById('arch-diagram');
-  const lightbox = document.getElementById('lightbox');
+  const lightbox = document.getElementById('lightbox') as HTMLElement;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
 
-  diagram?.addEventListener('click', () => lightbox?.classList.add('open'));
-  lightbox?.addEventListener('click', () => lightbox.classList.remove('open'));
+  document.querySelectorAll<HTMLImageElement>('.diagram').forEach(diagram => {
+    diagram.addEventListener('click', () => {
+      lightboxImg.src = diagram.dataset.full ?? diagram.src;
+      lightboxImg.alt = diagram.alt;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+    });
+  });
+
+  lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+  });
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') lightbox?.classList.remove('open');
+    if (e.key === 'Escape') {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+    }
   });
 </script>
